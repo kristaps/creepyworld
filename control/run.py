@@ -3,9 +3,12 @@ from .state import SceneState, InputState
 from .input import InputController
 from .output import OutputController
 from .director import Director
-
+from .tracking import Tracker
 
 def main():
+    tracker = Tracker()
+    tracker.start_tracking_mog()
+
     input_controller = InputController()
     output_controller = OutputController()
 
