@@ -2,6 +2,7 @@
 import os
 import calendar
 import base64
+import json
 from datetime import datetime
 
 import boto3
@@ -29,7 +30,20 @@ client = boto3.client(
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
 )
 
-CONFIDENCE_THRESHOLD = 60
+CONFIDENCE_THRESHOLD = 80
+
+
+def extract_face_meta(meta):
+    return {
+        'Eyeglasses': meta['Eyeglasses']['Value']
+        if meta['Eyeglasses']['Confidence'] >= CONFIDENCE_THRESHOLD else False, # True, False
+        'Sunglasses': meta['Sunglasses']['Value']
+        if meta['Sunglasses']['Confidence'] >= CONFIDENCE_THRESHOLD else False, # True, False
+        'Gender': meta['Gender']['Value']
+        if meta['Gender']['Confidence'] >= CONFIDENCE_THRESHOLD else None,  # 'Male', 'Female', None
+        'Mustache': meta['Mustache']['Value']
+        if meta['Mustache']['Confidence'] >= CONFIDENCE_THRESHOLD else False  # True, False
+    }
 
 
 # http://boto3.readthedocs.io/en/latest/reference/services/rekognition.html#Rekognition.Client.detect_faces
@@ -58,7 +72,7 @@ def analyse_face(image):
         Attributes=['DEFAULT', 'ALL']
     )
 
-    return response['FaceDetails']
+    return map(lambda x: extract_face_meta(x), response['FaceDetails'])
 
 
 if __name__ == '__main__':
