@@ -1,6 +1,6 @@
 
 import os
-import time
+import calendar
 import base64
 from datetime import datetime
 
@@ -9,8 +9,8 @@ from StringIO import StringIO
 from botocore.client import Config
 
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'AKIAJ4BFHTIFGCLP2JKQ')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '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')
 
 AWS_BUCKET = 'creepyworldfaces'
 
@@ -38,8 +38,8 @@ def analyse_face(image):
         raise TypeError('Invalid image types')
 
     write_key = '{timestamp}-{filename}'.format(
-        timestamp=time.mktime(datetime.now().timetuple()),
-        filename=image.name
+        timestamp=calendar.timegm(datetime.now().utctimetuple()),
+        filename=os.path.basename(image.name)
     )
 
     storage.meta.client.put_object(
@@ -59,8 +59,3 @@ def analyse_face(image):
     )
 
     return response['FaceDetails']
-
-
-if __name__ == '__main__':
-    with open('data/1.jpg', 'r') as image_file:
-        print analyse_face(image_file)
