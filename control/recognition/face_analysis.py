@@ -35,14 +35,15 @@ CONFIDENCE_THRESHOLD = 80
 
 def extract_face_meta(meta):
     return {
-        'Eyeglasses': meta['Eyeglasses']['Value']
-        if meta['Eyeglasses']['Confidence'] >= CONFIDENCE_THRESHOLD else False, # True, False
-        'Sunglasses': meta['Sunglasses']['Value']
-        if meta['Sunglasses']['Confidence'] >= CONFIDENCE_THRESHOLD else False, # True, False
-        'Gender': meta['Gender']['Value']
-        if meta['Gender']['Confidence'] >= CONFIDENCE_THRESHOLD else None,  # 'Male', 'Female', None
-        'Mustache': meta['Mustache']['Value']
-        if meta['Mustache']['Confidence'] >= CONFIDENCE_THRESHOLD else False  # True, False
+        'Eyeglasses': meta.get('Eyeglasses', {}).get('Value')
+        if meta.get('Eyeglasses', {}).get('Confidence') >= CONFIDENCE_THRESHOLD else False,  # True, False
+        'Sunglasses': meta.get('Sunglasses', {}).get('Value')
+        if meta.get('Sunglasses', {}).get('Confidence') >= CONFIDENCE_THRESHOLD else False,  # True, False
+        'Gender': meta.get('Gender', {}).get('Value')
+        if meta.get('Gender', {}).get('Confidence') >= CONFIDENCE_THRESHOLD else None,  # 'Male', 'Female', None
+        'Mustache': meta.get('Mustache').get('Value')
+        if meta.get('Mustache', {}).get('Confidence') >= CONFIDENCE_THRESHOLD else False,  # True, False,
+        'AgeRange': meta.get('AgeRange')
     }
 
 
