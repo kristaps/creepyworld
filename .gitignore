@@ -1,0 +1,5 @@
+.DS_Store
+*.py[oc]
+*.mo
+.idea/
+data/
