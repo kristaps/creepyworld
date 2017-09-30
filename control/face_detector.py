@@ -28,46 +28,25 @@ class Tracker:
             ret, frame = cap.read()
 
             if frame is not None:
-                #height, width = frame.shape[:2]
+                face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+                eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-                framecp = frame.copy()
+                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-                blur = cv2.GaussianBlur(frame, self.KERNEL_BLUR, 0)
+                faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+                for (x,y,w,h) in faces:
+                    cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),2)
+                    roi_gray = gray[y:y+h, x:x+w]
+                    roi_color = frame[y:y+h, x:x+w]
+                    eyes = eye_cascade.detectMultiScale(roi_gray)
+                    for (ex,ey,ew,eh) in eyes:
+                        cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+                cv2.imshow('img',frame)
 
-                fgmask = fgbg.apply(frame, learningRate=0.005)
+                k = cv2.waitKey(30) & 0xff
 
-                frame, cont, hierarchy = cv2.findContours(fgmask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-                largestcontour, area = self.get_largest_contour(cont)
-
-                if largestcontour is not None:
-                    (x, y), radius = cv2.minEnclosingCircle(largestcontour)
-
-                    center = self.get_center(largestcontour)
-
-                    self.coords = self.translate_coords(center)
-
-                    print(str(area))
-
-                    cv2.circle(fgmask, center, 10, (255, 255, 255), -1)
-                    cv2.circle(framecp, center, 10, (0, 0, 255), -1)
-
-                cv2.imshow('fgmast', fgmask)
-                cv2.imshow('cont', framecp)
-
-                #y1
-                #|
-                #|
-                #|
-                #|
-                #|
-                #|
-                #0_______________x1
-                    
-            k = cv2.waitKey(30) & 0xff
-
-            if k == 27:
-                break
+                if k == 27:
+                    break
 
         cap.release()
         cv2.destroyAllWindows()
