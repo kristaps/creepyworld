@@ -1,4 +1,5 @@
 import cv2
+import socket
 import cv2.bgsegm
 import numpy as np
 from time import sleep
@@ -10,12 +11,16 @@ class Tracker:
     MIN_CONTOUR_AREA = 500
     WIDTH = 640
     HEIGHT = 480
+    #UDP_IP = "192.168.1.55"
+    UDP_IP = "192.168.1.104"
+    UDP_PORT = 8765
 
     def __init__(self):
-        pass
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def start_tracking_mog(self):
-        cap = cv2.VideoCapture(1)
+        #cap = cv2.VideoCapture(1)
+        cap = cv2.VideoCapture(0)
 
         if (not cap.isOpened()):
             print("fuck")
@@ -28,8 +33,6 @@ class Tracker:
             ret, frame = cap.read()
 
             if frame is not None:
-                #height, width = frame.shape[:2]
-
                 framecp = frame.copy()
 
                 blur = cv2.GaussianBlur(frame, self.KERNEL_BLUR, 0)
@@ -46,6 +49,8 @@ class Tracker:
                     center = self.get_center(largestcontour)
 
                     self.coords = self.translate_coords(center)
+
+                    self.send(self.coords[0], self.coords[1])
 
                     print(str(area))
 
@@ -101,6 +106,15 @@ class Tracker:
         cy = int(M['m01'] / M['m00'])
 
         return (cx, cy)
+
+    def send(self, x, y):
+        try:
+            message = str(x) + "," + str(y) + "Z"
+            self.sock.sendto(message.encode(), (self.UDP_IP, self.UDP_PORT))
+            print("sent message:", message)
+        except Exception as e:
+            print("send exception: ", e)
+            self.sock.close()
 
 def main():
     tracker = Tracker()
