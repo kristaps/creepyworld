@@ -2,8 +2,8 @@ import socket
 import threading
 from time import sleep
 
-UDP_IP = "127.0.0.1"
-UDP_PORT = 9999
+UDP_IP = "192.168.1.55"
+UDP_PORT = 8765
 MESSAGE = "Hello, World!"
 
 print ("UDP target IP:", UDP_IP)
@@ -12,7 +12,7 @@ print ("message:", MESSAGE)
 
 sock = socket.socket(socket.AF_INET, # Internet
                     socket.SOCK_DGRAM) # UDP
-sock.bind((UDP_IP, UDP_PORT))
+#sock.bind((UDP_IP, UDP_PORT))
 
 def send():
     while True:
@@ -25,7 +25,7 @@ def send():
             sock.close()
             break
 
-def receive():
+'''def receive():
     while True:
         try:
             data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
@@ -35,5 +35,5 @@ def receive():
             sock.close()
             break
 
-threading.Thread(target=receive).start()
+threading.Thread(target=receive).start()'''
 threading.Thread(target=send).start()
