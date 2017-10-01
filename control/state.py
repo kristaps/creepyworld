@@ -31,6 +31,8 @@ class HeadState(object):
     audio_file = None
     volume = 0.5
 
+    motion_mode = 'controlled'
+
     def reset(self, duration=0.0):
         self.angle_start = self.angle_current = self.angle_end = 0.0
         self.time_start = self.time_current = self.time_end = 0.0
@@ -49,6 +51,9 @@ class HeadState(object):
     def turn_toward(self, x, y, time_=None):
         angle = clamp((atan2(y - self.y, x - self.x) / pi * 180.0) + 180.0, 0.0, 360.0)
         self.turn_to(angle, time_)
+
+    def set_motion_mode(self, mode):
+        self.motion_mode = mode
 
     def play_audio(self, file):
         self.audio_file = file

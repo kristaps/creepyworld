@@ -20,7 +20,7 @@ class OutputController(object):
 
     def __init__(self, device_path):
         print("Initializing serial")
-        self.arduino = serial.Serial(device_path)
+        # self.arduino = serial.Serial(device_path)
         print("Initializing audio")
         self.audio = Audio()
         self.audio.set_listener_position(0.5, 0.5)
@@ -46,7 +46,7 @@ class OutputController(object):
     def turn_head(self, index, angle):
         angle = int(angle)
         print(format_command(index, angle))
-        self.arduino.write(format_command(index, angle))
+        # self.arduino.write(format_command(index, angle))
 
 
 class Audio(object):
@@ -66,6 +66,9 @@ class Audio(object):
         print("Playing", file, x, y)
         if file in self.sources:
             source = self.sources[file]
+            # x = {0.1: -9.5, 0.5: 0.5, 0.9: 10.5}[x]
+            # y = {0.1: -9.5, 0.5: 0.5, 0.9: 10.5}[y]
+            print (x, y)
             source.set_position((x, y, 0.0))
             source.play()
 

@@ -49,3 +49,10 @@ class AudioXTest(Script):
         (1.0, PlayAudio(0, 'id1.wav')),
         (3.0, PlayAudio(3, 'id1.wav')),
     ]
+
+
+class AudioYTest(Script):
+    ACTIONS = [
+        (1.0, PlayAudio(3, 'id1.wav')),
+        (3.0, PlayAudio(5, 'id1.wav')),
+    ]

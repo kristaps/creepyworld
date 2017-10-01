@@ -1,5 +1,5 @@
 from control.actions import HEAD_ALL
-from control.scripts import AudioTest, AudioXTest, HardwareTest
+from control.scripts import AudioTest, AudioXTest, AudioYTest, HardwareTest
 
 class State:
     Rest = 'rest'
@@ -14,16 +14,18 @@ class Director(object):
 
     def __init__(self, now):
         self.start_time = now
-        self.start_script(HardwareTest(), now)
 
     def direct(self, time_now, scene_state, input_state):
+        if input_state.present and self.script is None:
+            self.start_script(AudioTest(), time_now)
+
         if self.script:
             self.advance_script(time_now, scene_state)
 
-        # TODO: turn heads that are tracking
+        self.update_tracking_heads(time_now, scene_state, input_state)
 
     def start_script(self, script, time_now):
-        print("Starting script", self.script)
+        print("Starting script", script)
         self.script = script
         self.script_start_time = time_now
 
@@ -42,3 +44,7 @@ class Director(object):
             print("Script ended", self.script)
             self.script = None
 
+    def update_tracking_heads(self, time_now, scene_state, input_state):
+        for head in scene_state.heads:
+            if head.motion_mode == 'tracked':
+                head.turn_toward(input_state.x, input_state.y, time_now + 0.5)
