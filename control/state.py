@@ -1,18 +1,18 @@
 from boltons.mathutils import clamp
 from math import atan2, pi
 
-NUM_HEADS = 9
+NUM_HEADS = 6
 
 INITIAL_HEAD_POSITIONS = [
     (0.1, 0.1),  # SW
     (0.1, 0.5),  # W
     (0.1, 0.9),  # NW
     (0.9, 0.1),  # SE
-    (0.5, 0.9),  # E
+    (0.9, 0.5),  # E
     (0.9, 0.9),  # NE
-    (0.5, 0.1),  # S
-    (0.5, 0.5),  # Center
-    (0.5, 0.9),  # N
+    # (0.5, 0.1),  # S
+    # (0.5, 0.5),  # Center
+    # (0.5, 0.9),  # N
 ]
 
 
@@ -47,7 +47,6 @@ class HeadState(object):
         self.time_end = time_ or self.time_current
 
     def turn_toward(self, x, y, time_=None):
-        # TODO: convert angle
         angle = clamp((atan2(y - self.y, x - self.x) / pi * 180.0) + 180.0, 0.0, 360.0)
         self.turn_to(angle, time_)
 

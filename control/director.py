@@ -1,4 +1,5 @@
-
+from control.actions import HEAD_ALL
+from control.scripts import AudioTest, AudioXTest, HardwareTest
 
 class State:
     Rest = 'rest'
@@ -8,21 +9,36 @@ class State:
 class Director(object):
     start_time = 0.0
 
+    script = None
+    script_start_time = 0.0
+
     def __init__(self, now):
         self.start_time = now
-        self.triggered = False
-        self.triggered2 = False
+        self.start_script(HardwareTest(), now)
 
     def direct(self, time_now, scene_state, input_state):
-        for head in scene_state.heads:
-            head.turn_toward(input_state.x, input_state.y)
+        if self.script:
+            self.advance_script(time_now, scene_state)
 
-        # if time_now - self.start_time > 3.0 and not self.triggered:
-        #     print("TRIGGUURRRD!!")
-        #     scene_state.heads[0].play_audio('test.ogg')
-        #     self.triggered = True
-        #
-        # if time_now - self.start_time > 6.0 and not self.triggered2:
-        #     print("TRIGGUURRRD2!!")
-        #     scene_state.heads[5].play_audio('test2.ogg')
-        #     self.triggered2 = True
+        # TODO: turn heads that are tracking
+
+    def start_script(self, script, time_now):
+        print("Starting script", self.script)
+        self.script = script
+        self.script_start_time = time_now
+
+    def advance_script(self, time_now, scene_state):
+        due_actions = self.script.get_due_actions(time_now - self.script_start_time)
+        for action in due_actions:
+            if action.target == HEAD_ALL:
+                heads = scene_state.heads
+            else:
+                heads = [scene_state.heads[action.target]]
+
+            for head in heads:
+                action.execute(head, scene_state, time_now)
+
+        if self.script.finished():
+            print("Script ended", self.script)
+            self.script = None
+
