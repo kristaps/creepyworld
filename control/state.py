@@ -1,7 +1,7 @@
 from boltons.mathutils import clamp
 from math import atan2, pi
 
-NUM_HEADS = 6
+NUM_HEADS = 4
 
 INITIAL_HEAD_POSITIONS = [
     (0.1, 0.6),
