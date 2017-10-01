@@ -69,8 +69,9 @@ class Audio(object):
             # x = {0.1: -9.5, 0.5: 0.5, 0.9: 10.5}[x]
             # y = {0.1: -9.5, 0.5: 0.5, 0.9: 10.5}[y]
             print (x, y)
-            source.set_position((x, y, 0.0))
+            # Flipping X due to reversed speakers
+            source.set_position((1.0 - x, 0.0, 1.0))
             source.play()
 
     def set_listener_position(self, x, y):
-        self.listener.set_position((x, y, 0.0))
+        self.listener.set_position((x, 0.0, y))

@@ -14,6 +14,7 @@ class Director(object):
 
     def __init__(self, now):
         self.start_time = now
+        self.start_script(AudioTest(), now)
 
     def direct(self, time_now, scene_state, input_state):
         if input_state.present and self.script is None:
@@ -35,7 +36,10 @@ class Director(object):
             if action.target == HEAD_ALL:
                 heads = scene_state.heads
             else:
-                heads = [scene_state.heads[action.target]]
+                try:
+                    heads = [scene_state.heads[action.target]]
+                except IndexError:
+                    continue
 
             for head in heads:
                 action.execute(head, scene_state, time_now)
