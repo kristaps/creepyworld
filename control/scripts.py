@@ -56,3 +56,50 @@ class AudioYTest(Script):
         (1.0, PlayAudio(3, 'id1.wav')),
         (3.0, PlayAudio(5, 'id1.wav')),
     ]
+
+
+# Setup motion mode before
+# Use only head numbers [0,1,2,3]
+class ProductionScript(Script):
+    ACTIONS = [
+        (10.0, SetMotionMode(HEAD_ALL, SetMotionMode.TRACKED)),
+        (13.0, PlayAudio(0, 'ComeOn_01.wav')),  # 2 sec
+        # +30 secs
+        (35.0, PlayAudio(0, 'home_01.wav')),  # 2 sec (+3 sec)
+        (38.0, PlayAudio(2, 'home_02.wav')),  # 7 sec (+8 sec)
+        (46.0, PlayAudio(1, 'home_03.wav')),  # 9 sec (+10 sec)
+        (56.0, PlayAudio(3, 'home_04.wav')),  # 3 sec
+        # +18 secs
+        # +18 secs
+        (72.0, PlayAudio(0, 'ComeOn_03.wav')),  # 5 sec (+6 sec)
+        (78.0, PlayAudio(2, 'ComeOn_04.wav')),  # 5 sec (+6 sec)
+        (84.0, PlayAudio(1, 'ComeOn_05.wav')),  # 4 sec
+        # + 20 secs
+        (104.0, PlayAudio(0, 'garage48_part1.wav')),  # 4 sec (+5 sec)
+        (109.0, PlayAudio(2, 'garage48-part2.wav')),  # 3 sec
+    ]
+
+
+class Production2Script(Script):
+    ACTIONS = [
+        (10.0, SetMotionMode(HEAD_ALL, SetMotionMode.TRACKED)),
+
+        (13.0, PlayAudio(0, 'hello_01.wav')),  # 1 sec (+2 sec)
+        (14.5, PlayAudio(3, 'hello_02.wav')),  # 1 sec (+2 sec)
+        # +30 secs
+        (35.0, PlayAudio(0, 'home_01.wav')),  # 2 sec (+3 sec)
+        (38.0, PlayAudio(2, 'home_02.wav')),  # 7 sec (+8 sec)
+        (46.0, PlayAudio(1, 'home_03.wav')),  # 9 sec (+10 sec)
+        (56.0, PlayAudio(3, 'home_04.wav')),  # 3 sec
+        # +18 secs
+        (72.0, PlayAudio(0, 'ComeOn_03.wav')),  # 5 sec (+6 sec)
+        (78.0, PlayAudio(2, 'ComeOn_04.wav')),  # 5 sec (+6 sec)
+        (84.0, PlayAudio(1, 'ComeOn_05.wav')),  # 4 sec
+        # + 20 secs
+        (104.0, PlayAudio(0, 'garage48_part1.wav')),  # 4 sec (+5 sec)
+        (109.0, PlayAudio(2, 'garage48-part2.wav')),  # 3 sec
+
+        # (120.0, PlayAudio(3, 'laugh_04.wav')),  # 7 sec (+2 sec)
+        # (122.0, PlayAudio(1, 'laugh_03.wav')),  # 5 sec (+1 sec)
+        # (123.0, PlayAudio(0, 'laugh_01.wav')),  # 7 sec (+0 sec)
+    ]
