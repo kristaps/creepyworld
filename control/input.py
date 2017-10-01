@@ -17,11 +17,16 @@ class InputController(object):
         self.position_socket.bind(('0.0.0.0', 8765))
         self.position_socket.setblocking(False)
 
+        self.script_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.script_socket.bind(('0.0.0.0', 9999))
+        self.script_socket.setblocking(False)
+
     def update_input(self, state):
         now = time()
         data = str()
         visitor_detected = False
 
+        # Position updates
         while True:
             try:
                 incoming = self.position_socket.recv(4096)
@@ -50,6 +55,7 @@ class InputController(object):
             break
 
         if (state.present != visitor_detected) and (self.presence_change_at is None):
+
             self.presence_change_at = now
         elif state.present == visitor_detected:
             self.presence_change_at = None
@@ -61,3 +67,27 @@ class InputController(object):
         # now = time()
         # state.x = round(sin(now - self.init_time) / 2.0, 4)
         # state.y = round(cos(now - self.init_time) / 2.0, 4)
+
+
+        # Script handling
+        data = str()
+        script = None
+
+        while True:
+            try:
+                incoming = self.script_socket.recv(4096)
+                print (incoming)
+                data += incoming.decode('ascii')
+            except socket.error as e:
+                if e.errno != 35:
+                    print("Unexpected socket errno", e.errno)
+
+                break
+
+        messages = data.split('\n')
+        while messages:
+            last_msg = messages.pop()
+            if last_msg.strip() == '':
+                continue
+            state.run_script = last_msg
+            break

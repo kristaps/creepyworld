@@ -56,3 +56,9 @@ class AudioYTest(Script):
         (1.0, PlayAudio(3, 'id1.wav')),
         (3.0, PlayAudio(5, 'id1.wav')),
     ]
+
+
+class Track(Script):
+    ACTIONS = [
+        (1.0, SetMotionMode(HEAD_ALL, SetMotionMode.TRACKED)),
+    ]

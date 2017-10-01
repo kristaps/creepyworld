@@ -1,5 +1,5 @@
 from control.actions import HEAD_ALL
-from control.scripts import AudioTest, AudioXTest, AudioYTest, HardwareTest
+from control.scripts import AudioTest, AudioXTest, AudioYTest, HardwareTest, Track
 
 class State:
     Rest = 'rest'
@@ -14,11 +14,12 @@ class Director(object):
 
     def __init__(self, now):
         self.start_time = now
-        self.start_script(AudioTest(), now)
+        # self.start_script(AudioTest(), now)
+        self.start_script(Track(), now)
 
     def direct(self, time_now, scene_state, input_state):
-        if input_state.present and self.script is None:
-            self.start_script(AudioTest(), time_now)
+        # if input_state.present and self.script is None:
+        #     self.start_script(AudioTest(), time_now)
 
         if self.script:
             self.advance_script(time_now, scene_state)

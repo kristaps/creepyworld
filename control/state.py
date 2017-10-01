@@ -100,6 +100,8 @@ class InputState(object):
     y = 0.5
     present = False
 
+    run_script = None
+
     def set_position(self, x, y):
         self.x = x
         self.y = y
