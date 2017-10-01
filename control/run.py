@@ -4,6 +4,16 @@ from .input import InputController
 from .output import OutputController
 from .director import Director
 from .tracking import Tracker
+from .scripts import *
+
+
+STEPPED_ACTIONS = {
+    ProductionStep0: False,
+    ProductionStep1: False,
+    ProductionStep2: False,
+    ProductionStep3: False
+}
+
 
 def main():
     tracker = Tracker()
