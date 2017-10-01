@@ -4,12 +4,18 @@ from math import atan2, pi
 NUM_HEADS = 6
 
 INITIAL_HEAD_POSITIONS = [
-    (0.1, 0.1),  # SW
-    (0.1, 0.5),  # W
-    (0.1, 0.9),  # NW
-    (0.9, 0.1),  # SE
-    (0.9, 0.5),  # E
-    (0.9, 0.9),  # NE
+    (0.1, 0.6),
+    (0.2, 0.8),
+    (0.55, 0.85),
+    (0.85, 0.85),
+
+    # Initially planned setup, obviously didn't work out :)
+    # (0.1, 0.1),  # SW
+    # (0.1, 0.5),  # W
+    # (0.1, 0.9),  # NW
+    # (0.9, 0.1),  # SE
+    # (0.9, 0.5),  # E
+    # (0.9, 0.9),  # NE
     # (0.5, 0.1),  # S
     # (0.5, 0.5),  # Center
     # (0.5, 0.9),  # N
