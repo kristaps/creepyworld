@@ -11,16 +11,16 @@ class Tracker:
     MIN_CONTOUR_AREA = 500
     WIDTH = 640
     HEIGHT = 480
-    #UDP_IP = "192.168.1.55"
-    UDP_IP = "192.168.1.104"
+    UDP_IP = "192.168.1.55"
+    #UDP_IP = "192.168.1.104"
     UDP_PORT = 8765
 
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def start_tracking_mog(self):
-        #cap = cv2.VideoCapture(1)
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(1)
+        #cap = cv2.VideoCapture(0)
 
         if (not cap.isOpened()):
             print("fuck")
