@@ -5,8 +5,9 @@ import socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 steps = [
-    'AudioTest',
-    'AudioTest',
+    'ProductionStep1',
+    'ProductionStep2',
+    'ProductionStep3',
 ]
 
 while steps:
